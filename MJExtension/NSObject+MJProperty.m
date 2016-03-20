@@ -13,6 +13,7 @@
 #import "MJProperty.h"
 #import "MJFoundation.h"
 #import <objc/runtime.h>
+#import "NSObject+BKProperty.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
@@ -114,6 +115,12 @@ static NSMutableDictionary *cachedPropertiesDict_;
         clazz = [self performSelector:@selector(objectClassInArray)][propertyName];
     }
     
+//    /*添加泛型支持-----start-----*/
+//    if ([self respondsToSelector:@selector(objectClassInModel)]){
+//        clazz = [self bk_objectClassInModel][propertyName];
+//    }
+//    /*添加泛型支持-----end-----*/
+    
     if (!clazz) {
         [self mj_enumerateAllClasses:^(__unsafe_unretained Class c, BOOL *stop) {
             NSDictionary *dict = objc_getAssociatedObject(c, &MJObjectClassInArrayKey);
@@ -160,7 +167,8 @@ static NSMutableDictionary *cachedPropertiesDict_;
             
             // 2.遍历每一个成员变量
             for (unsigned int i = 0; i<outCount; i++) {
-                MJProperty *property = [MJProperty cachedPropertyWithProperty:properties[i]];
+//                MJProperty *property = [MJProperty cachedPropertyWithProperty:properties[i]];
+                MJProperty *property = [MJProperty bk_cachedPropertyWithProperty:properties[i] objectClass:[self bk_propertyObjectClassInModel:[NSString stringWithUTF8String:property_getName(properties[i])]]];
                 // 过滤掉系统自动添加的元素
                 if ([property.name isEqualToString:@"hash"]
                     || [property.name isEqualToString:@"superclass"]
@@ -267,5 +275,7 @@ static NSMutableDictionary *cachedPropertiesDict_;
     [self mj_setupObjectClassInArray:objectClassInArray];
 }
 @end
+
+#import "NSObject+BKProperty.h"
 
 #pragma clang diagnostic pop

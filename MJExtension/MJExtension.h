@@ -13,3 +13,5 @@
 #import "NSObject+MJKeyValue.h"
 #import "NSString+MJExtension.h"
 #import "MJExtensionConst.h"
+#import "NSObject+BKProperty.h"
+#import "MJProperty+BKProperty.h"

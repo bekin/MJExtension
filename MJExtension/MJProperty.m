@@ -38,36 +38,39 @@
 #pragma mark - 缓存
 + (instancetype)cachedPropertyWithProperty:(objc_property_t)property
 {
-    MJProperty *propertyObj = objc_getAssociatedObject(self, property);
-    if (propertyObj == nil) {
-        propertyObj = [[self alloc] init];
-        propertyObj.property = property;
-        objc_setAssociatedObject(self, property, propertyObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return propertyObj;
+//    MJProperty *propertyObj = objc_getAssociatedObject(self, property);
+//    if (propertyObj == nil) {
+//        propertyObj = [[self alloc] init];
+//        propertyObj.property = property;
+//        objc_setAssociatedObject(self, property, propertyObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//    }
+//    return propertyObj;
+    return [self bk_cachedPropertyWithProperty:property objectClass:nil];
 }
 
 #pragma mark - 公共方法
 - (void)setProperty:(objc_property_t)property
 {
-    _property = property;
+    [self bk_setProperty:property propertyObjectClass:nil];
     
-    MJExtensionAssertParamNotNil(property);
-    
-    // 1.属性名
-    _name = @(property_getName(property));
-    
-    // 2.成员类型
-    NSString *attrs = @(property_getAttributes(property));
-    NSUInteger dotLoc = [attrs rangeOfString:@","].location;
-    NSString *code = nil;
-    NSUInteger loc = 1;
-    if (dotLoc == NSNotFound) { // 没有,
-        code = [attrs substringFromIndex:loc];
-    } else {
-        code = [attrs substringWithRange:NSMakeRange(loc, dotLoc - loc)];
-    }
-    _type = [MJPropertyType cachedTypeWithCode:code];
+//    _property = property;
+//    
+//    MJExtensionAssertParamNotNil(property);
+//    
+//    // 1.属性名
+//    _name = @(property_getName(property));
+//    
+//    // 2.成员类型
+//    NSString *attrs = @(property_getAttributes(property));
+//    NSUInteger dotLoc = [attrs rangeOfString:@","].location;
+//    NSString *code = nil;
+//    NSUInteger loc = 1;
+//    if (dotLoc == NSNotFound) { // 没有,
+//        code = [attrs substringFromIndex:loc];
+//    } else {
+//        code = [attrs substringWithRange:NSMakeRange(loc, dotLoc - loc)];
+//    }
+//    _type = [MJPropertyType cachedTypeWithCode:code];
 }
 
 /**

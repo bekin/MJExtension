@@ -15,6 +15,14 @@
  *  包装一个成员
  */
 @interface MJProperty : NSObject
+
+{
+    objc_property_t _property;
+    NSString *_name;
+    MJPropertyType *_type;
+}
+
+
 /** 成员属性 */
 @property (nonatomic, assign) objc_property_t property;
 /** 成员属性的名字 */
@@ -51,3 +59,5 @@
 + (instancetype)cachedPropertyWithProperty:(objc_property_t)property;
 
 @end
+
+#import "MJProperty+BKProperty.h"
